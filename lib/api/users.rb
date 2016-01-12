@@ -4,12 +4,14 @@ module API
     before { authenticate! }
 
     resource :users, requirements: { uid: /[0-9]*/, id: /[0-9]*/ } do
-      # Get a users list
-      #
-      # Example Request:
-      #  GET /users
-      #  GET /users?search=Admin
-      #  GET /users?username=root
+      desc 'Get a users lists' do
+        success Entities::UserFull
+      end
+      params do
+        optional :search, type: String
+        optional :username, type: String
+        optional :active, type: Boolean
+      end
       get do
         unless can?(current_user, :read_users_list, nil)
           render_api_error!("Not authorized.", 403)
@@ -31,12 +33,12 @@ module API
         end
       end
 
-      # Get a single user
-      #
-      # Parameters:
-      #   id (required) - The ID of a user
-      # Example Request:
-      #   GET /users/:id
+      desc 'Get a single user' do
+        success Entities::UserFull
+      end
+      params do
+        requires :id, type: Integer, desc: 'The ID of a user'
+      end
       get ":id" do
         @user = User.find(params[:id])
 

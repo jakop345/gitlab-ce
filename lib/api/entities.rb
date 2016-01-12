@@ -1,21 +1,22 @@
 module API
   module Entities
     class UserSafe < Grape::Entity
-      expose :name, :username
+      expose :name, :username, documentation: { type: 'String' }
     end
 
     class UserBasic < UserSafe
-      expose :id, :state, :avatar_url
+      expose :id, documentation: { type: 'Integer' }
+      expose :state, :avatar_url, documentation: { type: 'String' }
 
-      expose :web_url do |user, options|
+      expose :web_url, documentation: { type: 'String' } do |user, options|
         Gitlab::Routing.url_helpers.user_url(user)
       end
     end
 
     class User < UserBasic
-      expose :created_at
-      expose :is_admin?, as: :is_admin
-      expose :bio, :location, :skype, :linkedin, :twitter, :website_url
+      expose :created_at, documentation: { type: 'Date' }
+      expose :is_admin?, as: :is_admin, documentation: { type: 'Boolean' }
+      expose :bio, :location, :skype, :linkedin, :twitter, :website_url, documentation: { type: 'String' }
     end
 
     class Identity < Grape::Entity
