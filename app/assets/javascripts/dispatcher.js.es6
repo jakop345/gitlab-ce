@@ -208,7 +208,7 @@
           new gl.ProtectedBranchCreate();
           new gl.ProtectedBranchEditList();
           break;
-        case 'profiles:note_templates:new':
+        case 'profiles:note_templates:index':
         case 'profiles:note_templates:edit':
           new GLForm($('.js-note-template-form'));
           break;
