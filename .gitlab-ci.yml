@@ -302,6 +302,7 @@ html-proof-docs:
     PROGRESS: "1"
     SITE_PATH: "/tmp/docs/"
   before_script:
+    - apt-get update
     - apt-get install -y pandoc
     - scripts/generate-docs.rb
   script:
