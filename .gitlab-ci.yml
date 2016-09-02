@@ -248,13 +248,6 @@ teaspoon:
     paths:
     - coverage-javascript/default/
 
-lint-doc:
-  stage: test
-  image: "phusion/baseimage:latest"
-  before_script: []
-  script:
-    - scripts/lint-doc.sh
-
 bundler:audit:
   stage: test
   <<: *ruby-static-analysis
@@ -292,6 +285,27 @@ coverage:
     paths:
     - coverage/index.html
     - coverage/assets/
+
+# Documentation tests
+
+lint-doc:
+  stage: test
+  image: "phusion/baseimage:latest"
+  before_script: []
+  script:
+    - scripts/lint-doc.sh
+
+html-proof-docs:
+  stage: test
+  image: registry.gitlab.com/gitlab-org/gitlab-build-images:doc-gitlab-com
+  variables:
+    PROGRESS: "1"
+    SITE_PATH: "/tmp/docs/"
+  before_script:
+    - apt-get install -y pandoc
+    - scripts/generate-docs.rb
+  script:
+    - bundle exec htmlproofer ${SITE_PATH} --only-4xx
 
 # Notify slack in the end
 

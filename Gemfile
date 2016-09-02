@@ -307,6 +307,9 @@ group :development, :test do
 
   gem 'license_finder', '~> 2.1.0', require: false
   gem 'knapsack', '~> 1.11.0'
+
+  # Documentation tests
+  gem 'html-proofer'
 end
 
 group :test do
