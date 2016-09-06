@@ -296,6 +296,7 @@ lint-doc:
     - scripts/lint-doc.sh
 
 html-proof-docs:
+  image: "phusion/passenger-ruby23"
   stage: test
   image: registry.gitlab.com/gitlab-org/gitlab-build-images:doc-gitlab-com
   variables:
