@@ -32,7 +32,7 @@ project.
 
 Clicking on a pipeline will show the builds that were run for that pipeline.
 
-## Checking pipeline running time
+## How pipeline duration is calculated?
 
 Total running time for a given pipeline would exclude retries and pending
 (queue) time. We could reduce this problem down to finding the union of
