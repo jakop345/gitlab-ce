@@ -8,6 +8,7 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'sidekiq/testing/inline'
 require 'rspec/retry'
+require 'rspec_profiling/rspec'
 
 if ENV['CI'] && !ENV['NO_KNAPSACK']
   require 'knapsack'

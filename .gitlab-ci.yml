@@ -66,6 +66,16 @@ update-knapsack:
     - master@gitlab/gitlabhq
     - master@gitlab/gitlab-ee
 
+merge-rspec_profiling:
+  <<: *knapsack-state
+  stage: post-test
+  script:
+    - echo 'commit,date,file,line_number,description,status,exception,time,query_count,query_time,request_count,request_time' > tmp/merged_rspec_profiling.csv
+    - cat tmp/rspec_profiling*csv | sed 's/^commit,.*$//g' >> tmp/merged_rspec_profiling.csv
+  artifacts:
+    paths:
+      - tmp/merged_rspec_profiling.csv
+
 .use-db: &use-db
   services:
     - mysql:latest
@@ -100,6 +110,7 @@ setup-test-env:
     paths:
     - knapsack/
     - coverage/
+    - tmp/rspec_profiling*
 
 .spinach-knapsack: &spinach-knapsack
   stage: test
