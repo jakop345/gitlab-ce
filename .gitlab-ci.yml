@@ -296,15 +296,13 @@ lint-doc:
     - scripts/lint-doc.sh
 
 html-proof-docs:
-  image: "phusion/passenger-ruby23"
   stage: test
-  image: registry.gitlab.com/gitlab-org/gitlab-build-images:doc-gitlab-com
+  image: "registry.gitlab.com/gitlab-org/gitlab-build-images:doc-gitlab-com"
   variables:
     PROGRESS: "1"
     SITE_PATH: "/tmp/docs/"
   before_script:
-    - apt-get update
-    - apt-get install -y pandoc
+    - bundle install --without postgres mysql production --jobs $(nproc) "${FLAGS[@]}" --retry=3
     - scripts/generate-docs.rb
   script:
     - bundle exec htmlproofer ${SITE_PATH} --only-4xx
