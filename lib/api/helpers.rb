@@ -394,7 +394,7 @@ module API
         header['X-Sendfile'] = path
         body
       else
-        file FileStreamer.new(path)
+        file path
       end
     end
 
