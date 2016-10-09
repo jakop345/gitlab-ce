@@ -1,3 +1,5 @@
+include SentryHelper
+
 module Gitlab
   module GonHelper
     def add_gon_variables
@@ -8,6 +10,9 @@ module Gitlab
       gon.shortcuts_path         = help_page_path('shortcuts')
       gon.user_color_scheme      = Gitlab::ColorSchemes.for_user(current_user).css_class
       gon.award_menu_url         = emojis_path
+      gon.sentry_dsn             = sentry_dsn_public if sentry_enabled?
+      gon.gitlab_url             = Gitlab.config.gitlab.url
+      gon.is_production          = Rails.env.production?
 
       if current_user
         gon.current_user_id = current_user.id

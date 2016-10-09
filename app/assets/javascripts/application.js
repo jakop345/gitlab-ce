@@ -52,6 +52,7 @@
 /*= require_directory ./u2f */
 /*= require_directory . */
 /*= require fuzzaldrin-plus */
+/*= require raven_config */
 
 (function() {
   window.slugify = function(text) {
