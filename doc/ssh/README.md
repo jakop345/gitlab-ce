@@ -2,55 +2,59 @@
 
 Git is a distributed version control system, which means you can work locally
 but you can also share or "push" your changes to other servers.
-Before you can push your changes to a GitLab server
+Before you can push your changes to a GitLab server,
 you need a secure communication channel for sharing information.
 GitLab uses Public-key or asymmetric cryptography
 which "encrypts" a communication channel by locking it with your "private key"
 and allows trusted parties to unlock it with your "public key".
 If someone does not have your public key they cannot access the unencrypted message.
 
-## Locating an existing SSH key pair
+## 1. Locating an existing SSH key pair
 
 Before generating a new SSH key check if your system already has one
 at the default location by opening a shell, or Command Prompt on Windows,
 and running the following command:
 
 **Windows Command Prompt:**
+
 ```bash
 type %userprofile%\.ssh\id_rsa.pub
 ```
 **GNU/Linux/Mac/PowerShell:**
+
 ```bash
 cat ~/.ssh/id_rsa.pub
 ```
 
-If you see a string starting with `ssh-rsa` you already have an SSH key pair
+If you see a string starting with `ssh-rsa` you already have a SSH key pair
 and you can skip the next step **Generating a new SSH key pair**
 and continue onto **Copying your public SSH key to the clipboard**.
 If you don't see the string or would like to generate a SSH key pair with a custom name
 continue onto the next step.
 
-## Generating a new SSH key pair
+## 2. Generating a new SSH key pair
 
 To generate a new SSH key, use the following command:
 
-**GNU/Linux/Mac/PowerShell:**
+**GNU/Linux/Mac:**
+
 ```bash
-ssh-keygen -t rsa -C "$your_email"
+ssh-keygen -t rsa -b 4096 -C "$your_email"
 ```
 
 **Windows:**
+
 On Windows you will need to download
 [PuttyGen](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
 and follow this documentation
 [article](https://the.earth.li/~sgtatham/putty/0.67/htmldoc/Chapter8.html#pubkey-puttygen)
-to generate a SSH key pair.
+to generate a SSH key pair or install PowerShell and follow the GNU instructions above.
 
-### Provide a file path
+### 2.1. Provide a file path
 
 You will be prompted to input a file path to save your key pair to.
 
-If you don't already have an SSH key pair use the suggested path by pressing enter.
+If you don't already have a SSH key pair use the suggested path by pressing enter.
 Using the suggested path will allow your SSH client
 to automatically use the key pair with no additional configuration.
 
@@ -58,40 +62,49 @@ If you already have a key pair with the suggested file path you will need to inp
 and declare what host this key pair will be used for in your `.ssh/config` file,
 see **Working with non-default SSH key pair paths** for more information.
 
-### Provide a password
+### 2.2. Provide a password
 
 Once you have input a file path you will be prompted to input a password to secure your SSH key pair.
-Note: It is a best practice to use a password for an SSH key pair,
+
+>**Note:**
+It is a best practice to use a password for a SSH key pair,
 but it is not required and you can skip creating a password by pressing enter.
 
 If you want to change the password of your key, you can use the following command:
-`ssh-keygen -p <keyname>`
 
-## Copying your public SSH key to the clipboard
+```bash
+ssh-keygen -p <keyname>
+```
+
+## 3. Copying your public SSH key to the clipboard
 
 To copy your public key to the clipboard, use the appropriate code for you operating system below:
 
 **Windows Command Line:**
+
 ```bash
 type %userprofile%\.ssh\id_rsa.pub | clip
 ```
 
 **Windows PowerShell:**
+
 ```bash
 cat ~/.ssh/id_rsa.pub | clip
 ```
 
 **Mac:**
+
 ```bash
 pbcopy < ~/.ssh/id_rsa.pub
 ```
 
 **GNU/Linux (requires xclip):**
+
 ```bash
 xclip -sel clip < ~/.ssh/id_rsa.pub
 ```
 
-## Adding your public SSH key to GitLab
+## 4. Adding your public SSH key to GitLab
 
 Navigate to the 'SSH Keys' tab in you 'Profile Settings'.
 Paste your key in the 'Key' section and give it a relevant 'Title'.
@@ -112,19 +125,14 @@ Below are two example host configurations using their own key:
 ```
 # GitLab.com server
 Host gitlab.com
-RSAAuthentication yes
-IdentityFile ~/folder1/private-key-filename
-User mygitlabusername
+  RSAAuthentication yes
+  IdentityFile ~/folder1/private-key-filename
 
 # Private GitLab server
 Host gitlab.company.com
-RSAAuthentication yes
-IdentityFile ~/folder2/private-key-filename
+  RSAAuthentication yes
+  IdentityFile ~/folder2/private-key-filename
 ```
-
-Note in the gitlab.com example above a username was specified
-to override the default chosen by OpenSSH (your local username).
-This is only required if your local and remote usernames differ.
 
 Due to the wide variety of SSH clients and their very large number of configuration options,
 further explanation of these topics is beyond the scope of this document.
