@@ -38,7 +38,7 @@ class Import::BitbucketController < Import::BaseController
     @repo_id = params[:repo_id].to_s
     repo = client.project(@repo_id.gsub('___', '/'))
     @project_name = repo['slug']
-    @target_namespace = find_or_create_namespace(repo['owner'], client.user['user']['username'])
+    @target_namespace = find_or_create_namespace
 
     unless Gitlab::BitbucketImport::KeyAdder.new(repo, current_user, access_params).execute
       render 'deploy_key' and return
