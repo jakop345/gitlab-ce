@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
   include TokenAuthenticatable
   include ProjectFeaturesCompatibility
   include SelectForProjectAuthorization
+  include Routable
 
   extend Gitlab::ConfigHelper
 
@@ -330,12 +331,7 @@ class Project < ActiveRecord::Base
     #
     # Returns a Project, or nil if no project could be found.
     def find_with_namespace(path)
-      namespace_path, project_path = path.split('/', 2)
-
-      return unless namespace_path && project_path
-
-      namespace_path = connection.quote(namespace_path)
-      project_path = connection.quote(project_path)
+      return unless path.include?('/')
 
       # On MySQL we want to ensure the ORDER BY uses a case-sensitive match so
       # any literal matches come first, for this we have to use "BINARY".
@@ -343,8 +339,7 @@ class Project < ActiveRecord::Base
       # rows.
       binary = Gitlab::Database.mysql? ? 'BINARY' : ''
 
-      order_sql = "(CASE WHEN #{binary} namespaces.path = #{namespace_path} " \
-        "AND #{binary} projects.path = #{project_path} THEN 0 ELSE 1 END)"
+      order_sql = "(CASE WHEN #{binary} routes.path = #{connection.quote(path)} THEN 0 ELSE 1 END)"
 
       where_paths_in([path]).reorder(order_sql).take
     end
@@ -375,24 +370,13 @@ class Project < ActiveRecord::Base
       cast_lower = Gitlab::Database.postgresql?
 
       paths.each do |path|
-        namespace_path, project_path = path.split('/', 2)
+        next unless path.include?('/')
 
-        next unless namespace_path && project_path
-
-        namespace_path = connection.quote(namespace_path)
-        project_path = connection.quote(project_path)
-
-        where = "(namespaces.path = #{namespace_path}
-          AND projects.path = #{project_path})"
+        path = connection.quote(path)
+        where = "(routes.path = #{path})"
 
         if cast_lower
-          where = "(
-            #{where}
-            OR (
-              LOWER(namespaces.path) = LOWER(#{namespace_path})
-              AND LOWER(projects.path) = LOWER(#{project_path})
-            )
-          )"
+          where = "(#{where} OR (LOWER(routes.path) = LOWER(#{path})))"
         end
 
         wheres << where
@@ -401,7 +385,7 @@ class Project < ActiveRecord::Base
       if wheres.empty?
         none
       else
-        joins(:namespace).where(wheres.join(' OR '))
+        joins(:route).where(wheres.join(' OR '))
       end
     end
 
@@ -880,12 +864,13 @@ class Project < ActiveRecord::Base
   alias_method :human_name, :name_with_namespace
 
   def path_with_namespace
-    if namespace
-      namespace.path + '/' + path
+    if namespace && path
+      namespace.full_path + '/' + path
     else
       path
     end
   end
+  alias_method :full_path, :path_with_namespace
 
   def execute_hooks(data, hooks_scope = :push_hooks)
     hooks.send(hooks_scope).each do |hook|
@@ -1372,5 +1357,9 @@ class Project < ActiveRecord::Base
   # than the number of permitted boards per project it won't fail.
   def validate_board_limit(board)
     raise BoardLimitExceeded, 'Number of permitted boards exceeded' if boards.size >= NUMBER_OF_PERMITTED_BOARDS
+  end
+
+  def full_path_changed?
+    path_changed? || namespace_id_changed?
   end
 end

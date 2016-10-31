@@ -117,4 +117,21 @@ describe Namespace, models: true do
       expect(Namespace.clean_path("--%+--valid_*&%name=.git.%.atom.atom.@email.com")).to eq("valid_name")
     end
   end
+
+  describe '.find_by_path_or_name' do
+    let!(:group) { create(:group) }
+    let!(:nested_group) { create(:group, parent: group) }
+
+    it { expect(described_class.find_by_full_path(group.to_param)).to eq(group) }
+    it { expect(described_class.find_by_full_path(nested_group.to_param)).to eq(nested_group) }
+    it { expect(described_class.find_by_full_path('unknown')).to eq(nil) }
+  end
+
+  describe '#full_path' do
+    let(:group) { create(:group) }
+    let(:nested_group) { create(:group, parent: group) }
+
+    it { expect(group.full_path).to eq(group.path) }
+    it { expect(nested_group.full_path).to eq("#{group.path}/#{nested_group.path}") }
+  end
 end

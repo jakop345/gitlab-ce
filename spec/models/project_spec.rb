@@ -475,32 +475,15 @@ describe Project, models: true do
   end
 
   describe '.find_with_namespace' do
-    context 'with namespace' do
-      before do
-        @group = create :group, name: 'gitlab'
-        @project = create(:project, name: 'gitlabhq', namespace: @group)
-      end
-
-      it { expect(Project.find_with_namespace('gitlab/gitlabhq')).to eq(@project) }
-      it { expect(Project.find_with_namespace('GitLab/GitlabHQ')).to eq(@project) }
-      it { expect(Project.find_with_namespace('gitlab-ci')).to be_nil }
+    before do
+      @group = create :group, name: 'gitlab'
+      @project = create(:project, name: 'gitlabhq', namespace: @group)
     end
 
-    context 'when multiple projects using a similar name exist' do
-      let(:group) { create(:group, name: 'gitlab') }
-
-      let!(:project1) do
-        create(:empty_project, name: 'gitlab1', path: 'gitlab', namespace: group)
-      end
-
-      let!(:project2) do
-        create(:empty_project, name: 'gitlab2', path: 'GITLAB', namespace: group)
-      end
-
-      it 'returns the row where the path matches literally' do
-        expect(Project.find_with_namespace('gitlab/GITLAB')).to eq(project2)
-      end
-    end
+    it { expect(Project.find_with_namespace('gitlab/gitlabhq')).to eq(@project) }
+    it { expect(Project.find_with_namespace('GitLab/GitlabHQ')).to eq(@project) }
+    it { expect(Project.find_with_namespace('gitlabhq')).to be_nil }
+    it { expect(Project.find_with_namespace('gitlab-ci')).to be_nil }
   end
 
   describe '#to_param' do
