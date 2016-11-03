@@ -1,5 +1,7 @@
 /* eslint-disable */
-/*= require blob/template_selector */
+
+require('./template_selector');
+
 ((global) => {
 
   class BlobCiYamlSelector extends gl.TemplateSelector {

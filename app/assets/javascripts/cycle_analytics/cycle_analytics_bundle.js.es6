@@ -1,5 +1,5 @@
 /* eslint-disable */
-//= require vue
+window.Vue = require('vue');
 
 ((global) => {
 

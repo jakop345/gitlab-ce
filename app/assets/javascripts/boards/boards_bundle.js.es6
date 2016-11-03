@@ -1,16 +1,19 @@
 /* eslint-disable */
-//= require vue
-//= require vue-resource
-//= require Sortable
-//= require_tree ./models
-//= require_tree ./stores
-//= require_tree ./services
-//= require_tree ./mixins
-//= require_tree ./filters
-//= require ./components/board
-//= require ./components/board_sidebar
-//= require ./components/new_list_dropdown
-//= require ./vue_resource_interceptor
+
+function require_all(context) { return context.keys().map(context); }
+
+window.Vue = require('vue');
+window.Vue.use(require('vue-resource'));
+window.Sortable = require('vendor/Sortable');
+require_all(require.context('./models',   true, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./stores',   true, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./services', true, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./mixins',   true, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./filters',  true, /^\.\/.*\.(js|es6)$/));
+require('./components/board');
+require('./components/board_sidebar');
+require('./components/new_list_dropdown');
+require('./vue_resource_interceptor');
 
 $(() => {
   const $boardApp = document.getElementById('board-app'),

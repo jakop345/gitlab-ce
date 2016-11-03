@@ -1,12 +1,12 @@
 /* eslint-disable */
-//= require vue
-//= require ./merge_conflict_store
-//= require ./merge_conflict_service
-//= require ./mixins/line_conflict_utils
-//= require ./mixins/line_conflict_actions
-//= require ./components/diff_file_editor
-//= require ./components/inline_conflict_lines
-//= require ./components/parallel_conflict_lines
+window.Vue = require('vue');
+require('./merge_conflict_store');
+require('./merge_conflict_service');
+require('./mixins/line_conflict_utils');
+require('./mixins/line_conflict_actions');
+require('./components/diff_file_editor');
+require('./components/inline_conflict_lines');
+require('./components/parallel_conflict_lines');
 
 $(() => {
   const INTERACTIVE_RESOLVE_MODE = 'interactive';

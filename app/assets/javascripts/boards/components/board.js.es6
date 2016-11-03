@@ -1,7 +1,7 @@
 /* eslint-disable */
-//= require ./board_blank_state
-//= require ./board_delete
-//= require ./board_list
+require('./board_blank_state');
+require('./board_delete');
+require('./board_list');
 
 (() => {
   const Store = gl.issueBoards.BoardsStore;

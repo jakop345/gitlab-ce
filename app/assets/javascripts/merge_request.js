@@ -1,8 +1,8 @@
 /* eslint-disable */
 
-/*= require jquery.waitforimages */
-/*= require task_list */
-/*= require merge_request_tabs */
+require('vendor/jquery.waitforimages');
+require('vendor/task_list');
+require('./merge_request_tabs');
 
 (function() {
   var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };

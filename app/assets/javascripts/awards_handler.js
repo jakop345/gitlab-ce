@@ -1,9 +1,11 @@
 /* eslint-disable */
+emojiAliases = require('emoji-aliases');
+
 (function() {
   this.AwardsHandler = (function() {
     var FROM_SENTENCE_REGEX = /(?:, and | and |, )/; //For separating lists produced by ruby's Array#toSentence
     function AwardsHandler() {
-      this.aliases = gl.emojiAliases();
+      this.aliases = emojiAliases;
       $(document).off('click', '.js-add-award').on('click', '.js-add-award', (function(_this) {
         return function(e) {
           e.stopPropagation();

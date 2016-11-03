@@ -1,7 +1,3 @@
 /* eslint-disable */
 
-/*= require Chart */
-
-(function() {
-
-}).call(this);
+window.Chart = require('vendor/Chart');

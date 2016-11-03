@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-/*= require preview_markdown */
+require('./preview_markdown');
 
 (function() {
   this.DropzoneInput = (function() {

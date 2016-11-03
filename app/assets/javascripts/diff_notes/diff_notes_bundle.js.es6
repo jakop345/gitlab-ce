@@ -1,11 +1,14 @@
 /* eslint-disable */
-//= require vue
-//= require vue-resource
-//= require_directory ./models
-//= require_directory ./stores
-//= require_directory ./services
-//= require_directory ./mixins
-//= require_directory ./components
+
+function require_all(context) { return context.keys().map(context); }
+
+window.Vue = require('vue');
+window.Vue.use(require('vue-resource'));
+require_all(require.context('./models',     false, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./stores',     false, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./services',   false, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./mixins',     false, /^\.\/.*\.(js|es6)$/));
+require_all(require.context('./components', false, /^\.\/.*\.(js|es6)$/));
 
 $(() => {
   const COMPONENT_SELECTOR = 'resolve-btn, resolve-discussion-btn, jump-to-discussion, comment-and-resolve-btn';

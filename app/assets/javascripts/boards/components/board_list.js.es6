@@ -1,6 +1,6 @@
 /* eslint-disable */
-//= require ./board_card
-//= require ./board_new_issue
+require('./board_card');
+require('./board_new_issue');
 
 (() => {
   const Store = gl.issueBoards.BoardsStore;

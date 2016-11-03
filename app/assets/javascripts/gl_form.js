@@ -1,4 +1,6 @@
 /* eslint-disable */
+var autosize = require('vendor/autosize');
+
 (function() {
   this.GLForm = (function() {
     function GLForm(form) {

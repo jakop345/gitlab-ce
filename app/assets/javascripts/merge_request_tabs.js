@@ -4,7 +4,7 @@
 // Handles persisting and restoring the current tab selection and lazily-loading
 // content on the MergeRequests#show page.
 //
-/*= require js.cookie */
+window.Cookies = require('vendor/js.cookie');
 
 //
 // ### Example Markup

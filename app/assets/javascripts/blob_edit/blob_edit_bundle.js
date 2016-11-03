@@ -1,5 +1,5 @@
 /* eslint-disable */
-/*= require_tree . */
+require('./edit_blob');
 
 (function() {
   $(function() {

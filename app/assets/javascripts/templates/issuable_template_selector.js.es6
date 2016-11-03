@@ -1,5 +1,5 @@
 /* eslint-disable */
-/*= require ../blob/template_selector */
+require('../blob/template_selector');
 
 ((global) => {
   class IssuableTemplateSelector extends gl.TemplateSelector {

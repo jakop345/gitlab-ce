@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-/*= require clipboard */
+window.Clipboard = require('vendor/clipboard');
 
 (function() {
   var genericError, genericSuccess, showTooltip;

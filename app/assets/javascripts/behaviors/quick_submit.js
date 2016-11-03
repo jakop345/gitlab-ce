@@ -5,7 +5,7 @@
 // "Meta+Enter" (Mac) or "Ctrl+Enter" (Linux/Windows) key combination, the form
 // is submitted.
 //
-/*= require extensions/jquery */
+require('../extensions/jquery');
 
 //
 // ### Example Markup

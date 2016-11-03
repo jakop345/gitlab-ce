@@ -1,7 +1,3 @@
 /* eslint-disable */
 
-/*= require d3 */
-
-(function() {
-
-}).call(this);
+window.d3 = require('d3');

@@ -1,5 +1,8 @@
 /* eslint-disable */
-/*= require_tree . */
+
+// require everything else in this directory
+function require_all(context) { return context.keys().map(context); }
+require_all(require.context('.', false, /^\.\/(?!snippet_bundle).*\.(js|es6)$/));
 
 (function() {
   $(function() {

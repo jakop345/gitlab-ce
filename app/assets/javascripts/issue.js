@@ -1,8 +1,8 @@
 /* eslint-disable */
 
-/*= require flash */
-/*= require jquery.waitforimages */
-/*= require task_list */
+require('./flash');
+require('vendor/jquery.waitforimages');
+require('vendor/task_list');
 
 (function() {
   var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
