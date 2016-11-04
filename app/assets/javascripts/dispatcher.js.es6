@@ -34,6 +34,9 @@
           break;
         case 'projects:merge_requests:index':
         case 'projects:issues:index':
+          if(gl.hasOwnProperty('FilteredSearchManager')) {
+            new gl.FilteredSearchManager();
+          }
           Issuable.init();
           new gl.IssuableBulkActions();
           shortcut_handler = new ShortcutsNavigation();
