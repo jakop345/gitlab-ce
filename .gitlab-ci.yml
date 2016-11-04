@@ -23,6 +23,9 @@ before_script:
   - '[ "$USE_BUNDLE_INSTALL" != "true" ] || retry bundle install --without postgres production --jobs $(nproc) "${FLAGS[@]}"'
   - retry gem install knapsack
   - '[ "$SETUP_DB" != "true" ] || bundle exec rake db:drop db:create db:schema:load db:migrate add_limits_mysql'
+  - curl --silent --location https://deb.nodesource.com/setup_6.x | bash -
+  - apt-get install --assume-yes nodejs
+  - npm install
 
 stages:
 - prepare
@@ -76,6 +79,7 @@ update-knapsack:
   <<: *use-db
   script:
     - bundle exec rake assets:precompile 2>/dev/null
+    - bundle exec rake webpack:compile
     - JOB_NAME=( $CI_BUILD_NAME )
     - export CI_NODE_INDEX=${JOB_NAME[1]}
     - export CI_NODE_TOTAL=${JOB_NAME[2]}
@@ -94,6 +98,7 @@ update-knapsack:
   <<: *use-db
   script:
     - bundle exec rake assets:precompile 2>/dev/null
+    - bundle exec rake webpack:compile
     - JOB_NAME=( $CI_BUILD_NAME )
     - export CI_NODE_INDEX=${JOB_NAME[1]}
     - export CI_NODE_TOTAL=${JOB_NAME[2]}
