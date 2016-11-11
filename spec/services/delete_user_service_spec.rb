@@ -23,6 +23,44 @@ describe DeleteUserService, services: true do
       end
     end
 
+    context "a deleted user's issues" do
+      let(:project) { create :project }
+
+      before { project.team << [user, :developer] }
+
+      context "for an issue the user has created" do
+        let!(:issue) { create(:issue, project: project, author: user) }
+
+        before { DeleteUserService.new(current_user).execute(user) }
+
+        it 'does not delete the issue' do
+          expect(Issue.find_by_id(issue.id)).to be_present
+        end
+
+        it 'migrates the issue so that the "Ghost User" is the issue owner' do
+          migrated_issue = Issue.find_by_id(issue.id)
+
+          expect(migrated_issue.author).to eq(User.ghost)
+        end
+      end
+
+      context "for an issue the user was assigned to" do
+        let!(:issue) { create(:issue, project: project, assignee: user) }
+
+        before { DeleteUserService.new(current_user).execute(user) }
+
+        it 'does not delete issues the user is assigned to' do
+          expect(Issue.find_by_id(issue.id)).to be_present
+        end
+
+        it 'migrates the issue so that it is "Unassigned"' do
+          migrated_issue = Issue.find_by_id(issue.id)
+
+          expect(migrated_issue.assignee).to be_nil
+        end
+      end
+    end
+
     context "solo owned groups present" do
       let(:solo_owned)  { create(:group) }
       let(:member)      { create(:group_member) }
