@@ -435,15 +435,31 @@ describe 'Filter issues', feature: true do
 
     context 'milestone with other filters', js: true do
       it 'filters issues by searched milestone and text' do
+        search = "milestone:%#{milestone.title} bug"
+        input_filtered_search(search)
+        expect_issues_list_count(2)
+        expect_filtered_search_input(search)
       end
 
       it 'filters issues by searched milestone, author and text' do
+        search = "milestone:%#{milestone.title} author:@#{user.username} bug"
+        input_filtered_search(search)
+        expect_issues_list_count(2)
+        expect_filtered_search_input(search)
       end
 
       it 'filters issues by searched milestone, author, assignee and text' do
+        search = "milestone:%#{milestone.title} author:@#{user.username} assignee:@#{user.username} bug"
+        input_filtered_search(search)
+        expect_issues_list_count(2)
+        expect_filtered_search_input(search)
       end
 
       it 'filters issues by searched milestone, author, assignee, label and text' do
+        search = "milestone:%#{milestone.title} author:@#{user.username} assignee:@#{user.username} label:~#{bug_label.title} bug"
+        input_filtered_search(search)
+        expect_issues_list_count(2)
+        expect_filtered_search_input(search)
       end
     end
 
@@ -607,7 +623,7 @@ describe 'Filter issues', feature: true do
       input_filtered_search('bug')
 
       # Wait for search results to load
-      sleep 1
+      sleep 2
     end
 
     it 'open state' do
