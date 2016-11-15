@@ -303,6 +303,21 @@ describe 'Filter issues', feature: true do
       end
     end
 
+    context 'issue label clicked', js: true do
+      before do
+        find('.issues-list .issue .issue-info a .label', text: multiple_words_label.title).click
+        sleep 1
+      end
+
+      it 'filters' do
+        expect_issues_list_count(1)
+      end
+
+      it 'displays in search bar' do
+        expect(find('.filtered-search').value).to eq("label:~\"#{multiple_words_label.title}\"")
+      end
+    end
+
     context 'sorting', js: true do
       # TODO
     end
