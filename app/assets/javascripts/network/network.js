@@ -1,6 +1,9 @@
-/* eslint-disable func-names, space-before-function-paren, wrap-iife, no-var, quotes, no-undef, quote-props, prefer-template, comma-dangle, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, wrap-iife, no-var, quotes, quote-props,
+   prefer-template, comma-dangle */
+/* global BranchGraph */
+
 (function() {
-  this.Network = (function() {
+  window.Network = (function() {
     function Network(opts) {
       var vph;
       $("#filter_ref").click(function() {
@@ -14,7 +17,5 @@
     }
 
     return Network;
-
   })();
-
 }).call(this);

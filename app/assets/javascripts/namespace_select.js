@@ -1,8 +1,13 @@
-/* eslint-disable func-names, space-before-function-paren, no-var, space-before-blocks, prefer-rest-params, wrap-iife, one-var, vars-on-top, one-var-declaration-per-line, comma-dangle, object-shorthand, no-else-return, prefer-template, quotes, no-undef, prefer-arrow-callback, padded-blocks, no-param-reassign, no-cond-assign, max-len */
+/* eslint-disable func-names, space-before-function-paren, no-var, space-before-blocks,
+   prefer-rest-params, wrap-iife, one-var, vars-on-top, one-var-declaration-per-line, comma-dangle,
+   object-shorthand, no-else-return, prefer-template, quotes, prefer-arrow-callback,
+   no-param-reassign, no-cond-assign */
+/* global Api */
+
 (function() {
   var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  this.NamespaceSelect = (function() {
+  window.NamespaceSelect = (function() {
     function NamespaceSelect(opts) {
       this.onSelectItem = bind(this.onSelectItem, this);
       var fieldName, showAny;
@@ -61,10 +66,9 @@
     };
 
     return NamespaceSelect;
-
   })();
 
-  this.NamespaceSelects = (function() {
+  window.NamespaceSelects = (function() {
     function NamespaceSelects(opts) {
       var ref;
       if (opts == null) {
@@ -74,14 +78,12 @@
       this.$dropdowns.each(function(i, dropdown) {
         var $dropdown;
         $dropdown = $(dropdown);
-        return new NamespaceSelect({
+        return new window.NamespaceSelect({
           dropdown: $dropdown
         });
       });
     }
 
     return NamespaceSelects;
-
   })();
-
 }).call(this);

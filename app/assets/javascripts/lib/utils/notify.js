@@ -1,4 +1,7 @@
-/* eslint-disable func-names, space-before-function-paren, wrap-iife, no-var, one-var, one-var-declaration-per-line, consistent-return, no-undef, prefer-arrow-callback, no-return-assign, object-shorthand, comma-dangle, no-param-reassign, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, wrap-iife, no-var, one-var,
+   one-var-declaration-per-line, consistent-return, prefer-arrow-callback, no-return-assign,
+   object-shorthand, comma-dangle, no-param-reassign */
+
 (function() {
   (function(w) {
     var notificationGranted, notifyMe, notifyPermissions;
@@ -41,7 +44,6 @@
       }
     };
     w.notify = notifyMe;
-    return w.notifyPermissions = notifyPermissions;
+    w.notifyPermissions = notifyPermissions;
   })(window);
-
 }).call(this);

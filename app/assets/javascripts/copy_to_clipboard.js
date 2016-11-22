@@ -1,4 +1,6 @@
-/* eslint-disable func-names, space-before-function-paren, one-var, no-var, one-var-declaration-per-line, no-undef, prefer-template, quotes, no-unused-vars, prefer-arrow-callback, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, one-var, no-var,
+   one-var-declaration-per-line, prefer-template, quotes, no-unused-vars, prefer-arrow-callback */
+/* global Clipboard */
 
 /*= require clipboard */
 
@@ -45,5 +47,4 @@
     clipboard.on('success', genericSuccess);
     return clipboard.on('error', genericError);
   });
-
 }).call(this);

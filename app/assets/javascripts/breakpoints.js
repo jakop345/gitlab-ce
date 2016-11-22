@@ -1,6 +1,9 @@
-/* eslint-disable func-names, space-before-function-paren, wrap-iife, one-var, no-var, one-var-declaration-per-line, quotes, no-shadow, prefer-arrow-callback, prefer-template, consistent-return, padded-blocks, no-return-assign, new-parens, no-param-reassign, no-undef, max-len */
+/* eslint-disable func-names, space-before-function-paren, wrap-iife, one-var, no-var,
+   one-var-declaration-per-line, quotes, no-shadow, prefer-arrow-callback, prefer-template,
+   consistent-return, padded-blocks, no-return-assign, new-parens, no-param-reassign */
+
 (function() {
-  this.Breakpoints = (function() {
+  var Breakpoints = (function() {
     var BreakpointInstance, instance;
 
     function Breakpoints() {}
@@ -68,4 +71,5 @@
     };
   })(this));
 
+  window.Breakpoints = Breakpoints;
 }).call(this);

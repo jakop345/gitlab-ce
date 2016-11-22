@@ -1,4 +1,8 @@
-/* eslint-disable func-names, space-before-function-paren, prefer-arrow-callback, quotes, no-var, vars-on-top, camelcase, no-undef, comma-dangle, consistent-return, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, prefer-arrow-callback, quotes, no-var,
+   vars-on-top, camelcase, comma-dangle, consistent-return */
+/* global Network */
+/* global ShortcutsNetwork */
+
 // This is a manifest file that'll be compiled into including all the files listed below.
 // Add new JavaScript code in separate files in this directory and they'll automatically
 // be included in the compiled file accessible from http://example.com/assets/application.js
@@ -20,5 +24,4 @@
     });
     return new ShortcutsNetwork(network_graph.branch_graph);
   });
-
 }).call(this);

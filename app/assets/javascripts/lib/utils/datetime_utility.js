@@ -1,4 +1,8 @@
-/* eslint-disable func-names, space-before-function-paren, wrap-iife, no-var, no-param-reassign, no-cond-assign, no-undef, comma-dangle, no-unused-expressions, prefer-template, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, wrap-iife, no-var, no-param-reassign,
+   no-cond-assign, comma-dangle, no-unused-expressions, prefer-template */
+/* global dateFormat */
+/* global timeago */
+
 (function() {
   (function(w) {
     var base;
@@ -89,7 +93,5 @@
 
       return Math.floor((date2 - date1) / millisecondsPerDay);
     };
-
   })(window);
-
 }).call(this);

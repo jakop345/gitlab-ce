@@ -1,4 +1,13 @@
-/* eslint-disable func-names, space-before-function-paren, no-var, space-before-blocks, prefer-rest-params, wrap-iife, no-use-before-define, camelcase, no-unused-expressions, quotes, max-len, one-var, one-var-declaration-per-line, default-case, prefer-template, no-undef, consistent-return, no-alert, no-return-assign, no-param-reassign, prefer-arrow-callback, no-else-return, comma-dangle, no-new, brace-style, no-lonely-if, vars-on-top, no-unused-vars, semi, indent, no-sequences, no-shadow, newline-per-chained-call, no-useless-escape, radix, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, no-var, space-before-blocks,
+   prefer-rest-params, wrap-iife, no-use-before-define, camelcase, no-unused-expressions, quotes,
+   max-len, one-var, one-var-declaration-per-line, default-case, prefer-template, consistent-return,
+   no-alert, no-return-assign, no-param-reassign, prefer-arrow-callback, no-else-return,
+   comma-dangle, no-new, brace-style, no-lonely-if, vars-on-top, no-unused-vars, semi, indent,
+   no-sequences, no-shadow, newline-per-chained-call, no-useless-escape, radix */
+/* global Flash */
+/* global GLForm */
+/* global Autosave */
+/* global ResolveService */
 
 /*= require autosave */
 /*= require autosize */
@@ -11,7 +20,7 @@
 (function() {
   var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-  this.Notes = (function() {
+  window.Notes = (function() {
     const MAX_VISIBLE_COMMIT_LIST_COUNT = 3;
 
     Notes.interval = null;
@@ -670,7 +679,7 @@
      */
 
     Notes.prototype.addDiffNote = function(e) {
-      var $link, addForm, hasNotes, lineType, newForm, nextRow, noteForm, notesContent, replyButton, row, rowCssToAdd, targetContent;
+      var $link, addForm, hasNotes, lineType, newForm, nextRow, noteForm, notesContent, notesContentSelector, replyButton, row, rowCssToAdd, targetContent;
       e.preventDefault();
       $link = $(e.currentTarget);
       row = $link.closest("tr");
@@ -889,7 +898,5 @@
     };
 
     return Notes;
-
   })();
-
 }).call(this);

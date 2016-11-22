@@ -1,4 +1,8 @@
-/* eslint-disable func-names, space-before-function-paren, wrap-iife, max-len, one-var, no-var, one-var-declaration-per-line, no-unused-vars, camelcase, no-undef, quotes, no-useless-concat, prefer-template, quote-props, comma-dangle, object-shorthand, consistent-return, no-plusplus, prefer-arrow-callback, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, wrap-iife, max-len, one-var, no-var,
+   one-var-declaration-per-line, no-unused-vars, camelcase, quotes, no-useless-concat,
+   prefer-template, quote-props, comma-dangle, object-shorthand, consistent-return, no-plusplus,
+   prefer-arrow-callback */
+/* global Dropzone */
 
 /*= require preview_markdown */
 
@@ -214,7 +218,5 @@
     }
 
     return DropzoneInput;
-
   })();
-
 }).call(this);

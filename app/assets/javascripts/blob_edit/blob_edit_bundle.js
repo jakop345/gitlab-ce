@@ -1,4 +1,8 @@
-/* eslint-disable func-names, space-before-function-paren, prefer-arrow-callback, no-var, quotes, vars-on-top, no-unused-vars, no-undef, no-new, padded-blocks, max-len */
+/* eslint-disable func-names, space-before-function-paren, prefer-arrow-callback, no-var, quotes,
+   vars-on-top, no-unused-vars, no-new, padded-blocks */
+/* global EditBlob */
+/* global NewCommitForm */
+
 /*= require_tree . */
 
 (function() {
