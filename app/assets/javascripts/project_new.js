@@ -14,10 +14,28 @@
           return $('.save-project-loader').show();
         };
       })(this));
+      this.initVisibilitySelect();
       this.toggleSettings();
       this.toggleSettingsOnclick();
       this.toggleRepoVisibility();
     }
+
+    ProjectNew.prototype.initVisibilitySelect = function() {
+      this.visibilitySelect = document.querySelector('.js-visibility-select');
+      if (!this.visibilitySelect) return;
+      this.helpBlock = this.visibilitySelect.querySelector('.help-block');
+      this.select = this.visibilitySelect.querySelector('select');
+      if (this.select) {
+        this.visibilityChanged();
+        this.select.addEventListener('change', this.visibilityChanged.bind(this));
+      } else {
+        this.helpBlock.textContent = this.visibilitySelect.querySelector('.js-locked').dataset.helpBlock;
+      }
+    };
+
+    ProjectNew.prototype.visibilityChanged = function() {
+      this.helpBlock.innerText = this.select.querySelector('option:checked').dataset.description;
+    };
 
     ProjectNew.prototype.toggleSettings = function() {
       var self = this;

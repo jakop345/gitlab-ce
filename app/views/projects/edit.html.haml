@@ -37,7 +37,7 @@
                   = link_to "(?)", help_page_path("public_access/public_access")
                 %span.help-block
               .col-md-3.visibility-select-container
-                = render('shared/visibility_select', model_method: :visibility_level, form: f, selected_level: @project.visibility_level)
+                = render('projects/visibility_select', model_method: :visibility_level, form: f, selected_level: @project.visibility_level)
             = f.fields_for :project_feature do |feature_fields|
               %fieldset.features
                 .row
