@@ -51,8 +51,6 @@
   this.MergeRequestTabs = (function() {
     MergeRequestTabs.prototype.diffsLoaded = false;
 
-    MergeRequestTabs.prototype.buildsLoaded = false;
-
     MergeRequestTabs.prototype.pipelinesLoaded = false;
 
     MergeRequestTabs.prototype.commitsLoaded = false;
@@ -62,8 +60,6 @@
     function MergeRequestTabs(opts) {
       this.opts = opts != null ? opts : {};
       this.opts.setUrl = this.opts.setUrl !== undefined ? this.opts.setUrl : true;
-
-      this.buildsLoaded = this.opts.buildsLoaded || false;
 
       this.setCurrentAction = bind(this.setCurrentAction, this);
       this.tabShown = bind(this.tabShown, this);
@@ -110,10 +106,6 @@
         $.scrollTo(".merge-request-details .merge-request-tabs", {
           offset: -navBarHeight
         });
-      } else if (action === 'builds') {
-        this.loadBuilds($target.attr('href'));
-        this.expandView();
-        this.resetViewContainer();
       } else if (action === 'pipelines') {
         this.loadPipelines($target.attr('href'));
         this.expandView();
@@ -176,8 +168,8 @@
         action = 'notes';
       }
       this.currentAction = action;
-      // Remove a trailing '/commits' '/diffs' '/builds' '/pipelines' '/new' '/new/diffs'
-      new_state = this._location.pathname.replace(/\/(commits|diffs|builds|pipelines|new|new\/diffs)(\.html)?\/?$/, '');
+      // Remove a trailing '/commits' '/diffs' '/pipelines' '/new' '/new/diffs'
+      new_state = this._location.pathname.replace(/\/(commits|diffs|pipelines|new|new\/diffs)(\.html)?\/?$/, '');
 
       // Append the new action if we're on a tab other than 'notes'
       if (action !== 'notes') {
@@ -285,24 +277,6 @@
           return navBarHeight = $('.navbar-gitlab').outerHeight();
         }
       }
-    };
-
-    MergeRequestTabs.prototype.loadBuilds = function(source) {
-      if (this.buildsLoaded) {
-        return;
-      }
-      return this._get({
-        url: source + ".json",
-        success: (function(_this) {
-          return function(data) {
-            document.querySelector("div#builds").innerHTML = data.html;
-            gl.utils.localTimeAgo($('.js-timeago', 'div#builds'));
-            _this.buildsLoaded = true;
-            if (!this.pipelines) this.pipelines = new gl.Pipelines();
-            return _this.scrollToElement("#builds");
-          };
-        })(this)
-      });
     };
 
     MergeRequestTabs.prototype.loadPipelines = function(source) {

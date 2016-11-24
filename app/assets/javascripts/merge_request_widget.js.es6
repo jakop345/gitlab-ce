@@ -44,14 +44,12 @@
       this.readyForCICheck = false;
       this.readyForCIEnvironmentCheck = false;
       this.cancel = false;
-      clearInterval(this.fetchBuildStatusInterval);
       clearInterval(this.fetchBuildEnvironmentStatusInterval);
       this.clearEventListeners();
       this.addEventListeners();
       this.getCIStatus(false);
       this.getCIEnvironmentsStatus();
       this.retrieveSuccessIcon();
-      this.pollCIStatus();
       this.pollCIEnvironmentsStatus();
       notifyPermissions();
     }
@@ -66,13 +64,12 @@
 
     MergeRequestWidget.prototype.addEventListeners = function() {
       var allowedPages;
-      allowedPages = ['show', 'commits', 'builds', 'pipelines', 'changes'];
+      allowedPages = ['show', 'commits', 'pipelines', 'changes'];
       $(document).on('page:change.merge_request', (function(_this) {
         return function() {
           var page;
           page = $('body').data('page').split(':').last();
           if (allowedPages.indexOf(page) < 0) {
-            clearInterval(_this.fetchBuildStatusInterval);
             clearInterval(_this.fetchBuildEnvironmentStatusInterval);
             _this.cancelPolling();
             return _this.clearEventListeners();
@@ -131,18 +128,6 @@
       }
     };
 
-    MergeRequestWidget.prototype.pollCIStatus = function() {
-      return this.fetchBuildStatusInterval = setInterval(((function(_this) {
-        return function() {
-          if (!_this.readyForCICheck) {
-            return;
-          }
-          _this.getCIStatus(true);
-          return _this.readyForCICheck = false;
-        };
-      })(this)), 10000);
-    };
-
     MergeRequestWidget.prototype.getCIStatus = function(showNotification) {
       var _this;
       _this = this;
@@ -181,7 +166,6 @@
               message = message.replace('{{title}}', data.title);
               notify(title, message, _this.opts.gitlab_icon, function() {
                 this.close();
-                return Turbolinks.visit(_this.opts.builds_path);
               });
             }
             return _this.firstCICheck = false;
@@ -212,11 +196,11 @@
         if ($(`.mr-state-widget #${ environment.id }`).length) return;
         const $template = $(DEPLOYMENT_TEMPLATE);
         if (!environment.external_url || !environment.external_url_formatted) $('.js-environment-link', $template).remove();
-        
+
         if (!environment.stop_url) {
           $('.js-stop-env-link', $template).remove();
         }
-        
+
         if (environment.deployed_at && environment.deployed_at_formatted) {
           environment.deployed_at = gl.utils.getTimeago().format(environment.deployed_at, 'gl_en') + '.';
         } else {
