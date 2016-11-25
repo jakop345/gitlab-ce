@@ -23,6 +23,10 @@ module Ci
 
     delegate :stages, to: :statuses
 
+    scope :with_builds, -> do
+      joins(:builds).merge(Ci::Build.all)
+    end
+
     state_machine :status, initial: :created do
       event :enqueue do
         transition created: :pending

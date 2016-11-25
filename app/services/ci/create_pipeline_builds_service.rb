@@ -21,6 +21,7 @@ module Ci
         user: current_user,
         trigger_request: trigger_request
       )
+
       pipeline.builds.create(build_attributes)
     end
 
