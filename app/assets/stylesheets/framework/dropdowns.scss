@@ -624,3 +624,24 @@
     color: $gl-placeholder-color;
   }
 }
+
+.droplab ul {
+  overflow-y: scroll;
+
+  #dl-infinite-scroll-loading-element {
+    text-align: center;
+    color: $gray-darkest;
+
+    .loading-more {
+      &> i {
+        display: inline-block;
+      }
+
+      &> p {
+        display: inline-block;
+        padding-left: $gl-padding;
+        padding-right: $gl-padding;
+      }
+    }
+  }
+}

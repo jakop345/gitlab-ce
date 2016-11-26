@@ -199,7 +199,7 @@
           break;
         case 'projects:group_links:index':
           new gl.MemberExpirationDate();
-          new GroupsSelect();
+          new gl.GroupsDroplab();
           break;
         case 'search:show':
           new Search();
