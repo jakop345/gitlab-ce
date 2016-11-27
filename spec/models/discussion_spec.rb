@@ -3,14 +3,14 @@ require 'spec_helper'
 describe Discussion, model: true do
   subject { described_class.new([first_note, second_note, third_note]) }
 
-  let(:first_note) { create(:diff_note_on_merge_request) }
-  let(:second_note) { create(:diff_note_on_merge_request) }
-  let(:third_note) { create(:diff_note_on_merge_request) }
+  let(:first_note) { create(:discussion_note_on_merge_request) }
+  let(:second_note) { create(:discussion_note_on_merge_request) }
+  let(:third_note) { create(:discussion_note_on_merge_request) }
 
   describe "#resolvable?" do
-    context "when a diff discussion" do
+    context "when potentially resolvable" do
       before do
-        allow(subject).to receive(:diff_discussion?).and_return(true)
+        allow(subject).to receive(:discussion_resolvable?).and_return(true)
       end
 
       context "when all notes are unresolvable" do
@@ -50,9 +50,9 @@ describe Discussion, model: true do
       end
     end
 
-    context "when not a diff discussion" do
+    context "when not potentially resolvable" do
       before do
-        allow(subject).to receive(:diff_discussion?).and_return(false)
+        allow(subject).to receive(:discussion_resolvable?).and_return(false)
       end
 
       it "returns false" do
@@ -522,9 +522,9 @@ describe Discussion, model: true do
   end
 
   describe "#collapsed?" do
-    context "when a diff discussion" do
+    context "when potentially resolvable" do
       before do
-        allow(subject).to receive(:diff_discussion?).and_return(true)
+        allow(subject).to receive(:discussion_resolvable?).and_return(true)
       end
 
       context "when resolvable" do
@@ -558,31 +558,43 @@ describe Discussion, model: true do
           allow(subject).to receive(:resolvable?).and_return(false)
         end
 
-        context "when active" do
+        context "when a diff discussion" do
           before do
-            allow(subject).to receive(:active?).and_return(true)
+            allow(subject).to receive(:diff_discussion?).and_return(true)
           end
 
-          it "returns false" do
-            expect(subject.collapsed?).to be false
+          context "when active" do
+            before do
+              allow(subject).to receive(:active?).and_return(true)
+            end
+
+            it "returns false" do
+              expect(subject.collapsed?).to be false
+            end
+          end
+
+          context "when outdated" do
+            before do
+              allow(subject).to receive(:active?).and_return(false)
+            end
+
+            it "returns true" do
+              expect(subject.collapsed?).to be true
+            end
           end
         end
 
-        context "when outdated" do
-          before do
-            allow(subject).to receive(:active?).and_return(false)
-          end
-
-          it "returns true" do
-            expect(subject.collapsed?).to be true
+        context "when not a diff discussion" do
+          it "returns false" do
+            expect(subject.collapsed?).to be false
           end
         end
       end
     end
 
-    context "when not a diff discussion" do
+    context "when not potentially resolvable" do
       before do
-        allow(subject).to receive(:diff_discussion?).and_return(false)
+        allow(subject).to receive(:discussion_resolvable?).and_return(false)
       end
 
       it "returns false" do
@@ -608,5 +620,13 @@ describe Discussion, model: true do
         expect(truncated_lines).not_to include(be_meta)
       end
     end
+  end
+
+  describe '#single_note?' do
+
+  end
+
+  describe "#reply_attributes" do
+
   end
 end

@@ -1001,6 +1001,7 @@ ActiveRecord::Schema.define(version: 20161128161412) do
     t.string "line_code"
     t.string "note_type"
     t.text "position"
+    t.string "in_reply_to_discussion_id"
   end
 
   add_index "sent_notifications", ["reply_key"], name: "index_sent_notifications_on_reply_key", unique: true, using: :btree

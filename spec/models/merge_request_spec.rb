@@ -202,7 +202,7 @@ describe MergeRequest, models: true do
     end
   end
 
-  describe "#mr_and_commit_notes" do
+  describe "#related_notes" do
     let!(:merge_request) { create(:merge_request) }
 
     before do
@@ -214,7 +214,7 @@ describe MergeRequest, models: true do
 
     it "includes notes for commits" do
       expect(merge_request.commits).not_to be_empty
-      expect(merge_request.mr_and_commit_notes.count).to eq(2)
+      expect(merge_request.related_notes.count).to eq(2)
     end
 
     it "includes notes for commits from target project as well" do
@@ -222,7 +222,7 @@ describe MergeRequest, models: true do
                               project: merge_request.target_project)
 
       expect(merge_request.commits).not_to be_empty
-      expect(merge_request.mr_and_commit_notes.count).to eq(3)
+      expect(merge_request.related_notes.count).to eq(3)
     end
   end
 
@@ -1119,12 +1119,12 @@ describe MergeRequest, models: true do
   end
 
   context "discussion status" do
-    let(:first_discussion) { Discussion.new([create(:diff_note_on_merge_request)]) }
-    let(:second_discussion) { Discussion.new([create(:diff_note_on_merge_request)]) }
-    let(:third_discussion) { Discussion.new([create(:diff_note_on_merge_request)]) }
+    let(:first_discussion) { Discussion.new([create(:discussion_note_on_merge_request)]) }
+    let(:second_discussion) { Discussion.new([create(:discussion_note_on_merge_request)]) }
+    let(:third_discussion) { Discussion.new([create(:discussion_note_on_merge_request)]) }
 
     before do
-      allow(subject).to receive(:diff_discussions).and_return([first_discussion, second_discussion, third_discussion])
+      allow(subject).to receive(:resolvable_discussions).and_return([first_discussion, second_discussion, third_discussion])
     end
 
     describe "#discussions_resolvable?" do

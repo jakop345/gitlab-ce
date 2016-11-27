@@ -13,6 +13,10 @@ class LegacyDiffNote < Note
     end
   end
 
+  def discussion_class
+    LegacyDiffDiscussion
+  end
+
   def legacy_diff_note?
     true
   end

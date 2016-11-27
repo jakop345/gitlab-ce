@@ -136,7 +136,7 @@ class Notify < BaseMailer
   # with headers suitable for grouping by thread in email clients.
   #
   # See: mail_answer_thread
-  def mail_new_thread(model, headers = {})
+  def mail_new_discussion(model, headers = {})
     headers['Message-ID'] = message_id(model)
 
     mail_thread(model, headers)

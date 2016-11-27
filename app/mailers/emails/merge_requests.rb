@@ -3,7 +3,7 @@ module Emails
     def new_merge_request_email(recipient_id, merge_request_id)
       setup_merge_request_mail(merge_request_id, recipient_id)
 
-      mail_new_thread(@merge_request, merge_request_thread_options(@merge_request.author_id, recipient_id))
+      mail_new_discussion(@merge_request, merge_request_thread_options(@merge_request.author_id, recipient_id))
     end
 
     def new_mention_in_merge_request_email(recipient_id, merge_request_id, updated_by_user_id)

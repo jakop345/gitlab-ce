@@ -1,5 +1,5 @@
 class Discussion
-  NUMBER_OF_TRUNCATED_DIFF_LINES = 16
+  MEMOIZED_VALUES = []
 
   attr_reader :notes
 
@@ -11,12 +11,6 @@ class Discussion
             :for_commit?,
             :for_merge_request?,
 
-            :line_code,
-            :original_line_code,
-            :diff_file,
-            :for_line?,
-            :active?,
-
             to: :first_note
 
   delegate  :resolved_at,
@@ -25,19 +19,12 @@ class Discussion
             to: :last_resolved_note,
             allow_nil: true
 
-  delegate  :blob,
-            :highlighted_diff_lines,
-            :diff_lines,
-
-            to: :diff_file,
-            allow_nil: true
-
-  def self.for_notes(notes)
-    notes.group_by(&:discussion_id).values.map { |notes| new(notes) }
+  def self.build(notes)
+    notes.first.discussion_class.new(notes)
   end
 
-  def self.for_diff_notes(notes)
-    notes.group_by(&:line_code).values.map { |notes| new(notes) }
+  def self.build_collection(notes)
+    notes.group_by(&:discussion_id).values.map { |notes| build(notes) }
   end
 
   def initialize(notes)
@@ -49,6 +36,7 @@ class Discussion
 
     @last_resolved_note ||= resolved_notes.sort_by(&:resolved_at).last
   end
+  MEMOIZED_VALUES << :last_resolved_note
 
   def last_updated_at
     last_note.created_at
@@ -65,32 +53,40 @@ class Discussion
   alias_method :to_param, :id
 
   def diff_discussion?
-    first_note.diff_note?
+    false
   end
 
-  def legacy_diff_discussion?
-    notes.any?(&:legacy_diff_note?)
+  def potentially_resolvable?
+    true
+  end
+
+  def single_note?
+    false
   end
 
   def resolvable?
     return @resolvable if @resolvable.present?
 
-    @resolvable = diff_discussion? && notes.any?(&:resolvable?)
+    @resolvable = potentially_resolvable? && notes.any?(&:resolvable?)
   end
+  MEMOIZED_VALUES << :resolvable
 
   def resolved?
     return @resolved if @resolved.present?
 
     @resolved = resolvable? && notes.none?(&:to_be_resolved?)
   end
+  MEMOIZED_VALUES << :resolved
 
   def first_note
     @first_note ||= @notes.first
   end
+  MEMOIZED_VALUES << :first_note
 
   def last_note
     @last_note ||= @notes.last
   end
+  MEMOIZED_VALUES << :last_note
 
   def resolved_notes
     notes.select(&:resolved?)
@@ -120,25 +116,12 @@ class Discussion
     update { |notes| notes.unresolve! }
   end
 
-  def for_target?(target)
-    self.noteable == target && !diff_discussion?
-  end
-
-  def active?
-    return @active if @active.present?
-
-    @active = first_note.active?
-  end
-
   def collapsed?
-    return false unless diff_discussion?
-
     if resolvable?
       # New diff discussions only disappear once they are marked resolved
       resolved?
     else
-      # Old diff discussions disappear once they become outdated
-      !active?
+      false
     end
   end
 
@@ -147,52 +130,28 @@ class Discussion
   end
 
   def reply_attributes
-    data = {
+    {
       noteable_type: first_note.noteable_type,
       noteable_id:   first_note.noteable_id,
       commit_id:     first_note.commit_id,
       discussion_id: self.id,
+      note_type:     first_note.type
     }
-
-    if diff_discussion?
-      data[:note_type] = first_note.type
-
-      data.merge!(first_note.diff_attributes)
-    end
-
-    data
-  end
-
-  # Returns an array of at most 16 highlighted lines above a diff note
-  def truncated_diff_lines(highlight: true)
-    lines = highlight ? highlighted_diff_lines : diff_lines
-    prev_lines = []
-
-    lines.each do |line|
-      if line.meta?
-        prev_lines.clear
-      else
-        prev_lines << line
-
-        break if for_line?(line)
-
-        prev_lines.shift if prev_lines.length >= NUMBER_OF_TRUNCATED_DIFF_LINES
-      end
-    end
-
-    prev_lines
   end
 
   private
 
   def update
-    notes_relation = DiffNote.where(id: notes.map(&:id)).fresh
+    # Do not select `Note.resolvable`, so that system notes remain in the collection
+    notes_relation = Note.where(id: notes.map(&:id))
+
     yield(notes_relation)
 
     # Set the notes array to the updated notes
-    @notes = notes_relation.to_a
+    @notes = notes_relation.fresh.to_a
 
-    # Reset the memoized values
-    @last_resolved_note = @resolvable = @resolved = @first_note = @last_note = nil
+    MEMOIZED_VALUES.each do |var|
+      instance_variable_set(:"@#{var}", nil)
+    end
   end
 end

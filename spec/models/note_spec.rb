@@ -268,6 +268,14 @@ describe Note, models: true do
     end
   end
 
+  describe '.discussions' do
+    # TODO: Test
+  end
+
+  describe '.find_discussion' do
+    # TODO: Test
+  end
+
   describe ".grouped_diff_discussions" do
     let!(:merge_request) { create(:merge_request) }
     let(:project) { merge_request.project }
@@ -341,6 +349,45 @@ describe Note, models: true do
 
         expect(reloaded_note.discussion_id).not_to be_nil
         expect(reloaded_note.discussion_id).to match(/\A\h{40}\z/)
+      end
+    end
+  end
+
+  describe '#to_discussion' do
+    subject { create(:discussion_note_on_merge_request) }
+    let!(:note2) { create(:discussion_note_on_merge_request, project: subject.project, noteable: subject.noteable, in_reply_to_discussion_id: subject.discussion_id) }
+
+    it "returns a discussion with just this note" do
+      discussion = subject.to_discussion
+
+      expect(discussion.id).to eq(subject.discussion_id)
+      expect(discussion.notes).to eq([subject])
+    end
+  end
+
+  describe "#discussion" do
+    let!(:note1) { create(:discussion_note_on_merge_request) }
+    let!(:note2) { create(:diff_note_on_merge_request, project: note1.project, noteable: note1.noteable) }
+
+    context 'when the note is part of a discussion' do
+      subject { create(:discussion_note_on_merge_request, project: note1.project, noteable: note1.noteable, in_reply_to_discussion_id: note1.discussion_id) }
+
+      it "returns the discussion this note is in" do
+        discussion = subject.discussion
+
+        expect(discussion.id).to eq(subject.discussion_id)
+        expect(discussion.notes).to eq([note1, subject])
+      end
+    end
+
+    context 'when the note is not part of a discussion' do
+      subject { create(:note) }
+
+      it "returns a discussion with just this note" do
+        discussion = subject.discussion
+
+        expect(discussion.id).to eq(subject.discussion_id)
+        expect(discussion.notes).to eq([subject])
       end
     end
   end

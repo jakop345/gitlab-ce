@@ -14,6 +14,16 @@ describe Projects::NotesController do
     }
   end
 
+  describe 'GET index' do
+    # It renders the discussion partial for any threaded note
+    # TODO: Test
+  end
+
+  describe 'POST create' do
+    # Test :type, :new_discussion, :in_reply_to_discussion_id (in_reply_to_id?)
+    # TODO: Test
+  end
+
   describe 'POST toggle_award_emoji' do
     before do
       sign_in(user)
