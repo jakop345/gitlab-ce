@@ -26,7 +26,10 @@ module Gitlab
 
         @stage_class.custom_query(base_query)
 
-        base_query.project(extract_epoch(diff_fn).as('total_time'), *@stage_class.projections).order(@stage_class.order.desc).take(MAX_EVENTS)
+        base_query.
+          project(extract_epoch(diff_fn).as('total_time'), *@stage_class.projections).
+          order(@stage_class.order.desc).
+          take(MAX_EVENTS)
       end
 
       def extract_epoch(arel_attribute)
