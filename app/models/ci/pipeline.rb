@@ -24,7 +24,7 @@ module Ci
     delegate :stages, to: :statuses
 
     scope :with_builds, -> do
-      joins(:builds).merge(Ci::Build.all)
+      joins(:builds).merge(Ci::Build.all).distinct
     end
 
     state_machine :status, initial: :created do
