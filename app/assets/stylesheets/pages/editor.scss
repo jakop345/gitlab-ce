@@ -53,6 +53,14 @@
     display: inline-block;
     width: 450px;
     float: left;
+
+    @media(max-width: $screen-md-max) {
+      width: 280px;
+    }
+
+    @media(max-width: $screen-sm-max) {
+      width: 120px;
+    }
   }
 
   .file-buttons {
@@ -105,6 +113,10 @@
     .dropdown-menu-toggle {
       vertical-align: top;
       width: 220px;
+
+      @media(max-width: $screen-sm-max) {
+        width: 150px;
+      }
     }
   }
 
