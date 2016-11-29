@@ -4,9 +4,19 @@
   const UNFOLD_COUNT = 20;
 
   class Diff {
-    constructor() {
-      $('.files .diff-file').singleFileDiff();
-      $('.files .diff-file').filesCommentButton();
+    constructor(cb) {
+      const diffFile = $('.files .diff-file');
+      diffFile.singleFileDiff();
+      diffFile.filesCommentButton();
+
+      const locationHash = gl.utils.getLocationHash();
+      const anchoredDiff = locationHash && locationHash.split('_')[0];
+      if (anchoredDiff) {
+        this.openAnchoredDiff(anchoredDiff, () => {
+          this.highlighSelectedLine();
+          if (cb) cb();
+        });
+      }
 
       if (this.diffViewType() === 'parallel') {
         $('.content-wrapper .container-fluid').removeClass('container-limited');
@@ -59,7 +69,7 @@
     }
 
     openAnchoredDiff(anchoredDiff, cb) {
-      const diffTitle = $(`#file-path-${anchoredDiff}`);
+      const diffTitle = $(`#${anchoredDiff}`);
       const diffFile = diffTitle.closest('.diff-file');
       const nothingHereBlock = $('.nothing-here-block:visible', diffFile);
       if (nothingHereBlock.length) {

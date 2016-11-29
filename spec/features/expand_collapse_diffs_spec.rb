@@ -4,10 +4,10 @@ feature 'Expand and collapse diffs', js: true, feature: true do
   include WaitForAjax
 
   let(:branch) { 'expand-collapse-diffs' }
+  let(:project) { create(:project) }
 
   before do
     login_as :admin
-    project = create(:project)
 
     # Ensure that undiffable.md is in .gitattributes
     project.repository.copy_gitattributes(branch)
@@ -290,6 +290,21 @@ feature 'Expand and collapse diffs', js: true, feature: true do
           expect(evaluate_script('ajaxUris')).not_to include(a_string_matching('small_diff.md'))
         end
       end
+    end
+  end
+
+  context 'linking to a collapsed diff' do
+    it 'shows the diff content' do
+      expect(large_diff).not_to have_selector('.code')
+      expect(large_diff).to have_selector('.nothing-here-block')
+
+      large_diff_id = large_diff.find('.file-title')[:id]
+
+      visit namespace_project_commit_path(project.namespace, project, project.commit(branch), anchor: large_diff_id)
+      execute_script('window.location.reload()')
+
+      expect(large_diff).to have_selector('.code')
+      expect(large_diff).not_to have_selector('.nothing-here-block')
     end
   end
 end

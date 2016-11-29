@@ -91,7 +91,6 @@
           new GLForm($('.release-form'));
           break;
         case 'projects:merge_requests:show':
-          new gl.Diff();
           shortcut_handler = new ShortcutsIssuable(true);
           new ZenMode();
           new MergedButtons();
