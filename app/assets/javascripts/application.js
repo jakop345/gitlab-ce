@@ -54,6 +54,7 @@
 /*= require_directory . */
 /*= require fuzzaldrin-plus */
 /*= require es6-promise.auto */
+/*= require es6-symbol */
 
 (function () {
   document.addEventListener('page:fetch', gl.utils.cleanupBeforeFetch);
