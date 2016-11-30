@@ -13,9 +13,13 @@ describe PipelineConcludeWorker do
     end
 
     context 'when pipeline is not completed' do
-      context 'when pipeline is created within last week' do
-        let(:pipeline) do
-          create(:ci_pipeline, status: :running, created_at: 2.days.ago)
+      let(:pipeline) do
+        create(:ci_pipeline, status: :running)
+      end
+
+      context 'when pipeline is locked and can be unlocked' do
+        before do
+          create(:ci_build, :success, pipeline: pipeline)
         end
 
         it 'does not drop pipeline' do
@@ -23,29 +27,13 @@ describe PipelineConcludeWorker do
         end
       end
 
-      context 'when pipeline is older than one week' do
-        let(:pipeline) do
-          create(:ci_pipeline, status: :running, created_at: 2.weeks.ago)
+      context 'when updating pipeline has no effect' do
+        before do
+          create(:ci_build, :running, pipeline: pipeline)
         end
 
-        context 'when pipeline is locked and can be unlocked' do
-          before do
-            create(:ci_build, :success, pipeline: pipeline)
-          end
-
-          it 'does not drop pipeline' do
-            expect_no_pipeline_drop { worker.perform(pipeline.id) }
-          end
-        end
-
-        context 'when updating pipeline has no effect' do
-          before do
-            create(:ci_build, :running, pipeline: pipeline)
-          end
-
-          it 'drops the pipeline' do
-            expect_pipeline_drop { worker.perform(pipeline.id) }
-          end
+        it 'drops the pipeline' do
+          expect_pipeline_drop { worker.perform(pipeline.id) }
         end
       end
     end
