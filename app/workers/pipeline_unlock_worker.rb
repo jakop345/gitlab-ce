@@ -12,5 +12,14 @@ class PipelineUnlockWorker
         Sidekiq::Client.push_bulk('class' => PipelineProcessWorker,
                                   'args' => ids.in_groups_of(1))
       end
+
+    Ci::Pipeline.unfinished
+      .where('ci_commits.created_at < ?', 1.week.ago)
+      .pluck(:id).tap do |ids|
+        break if ids.empty?
+
+        Sidekiq::Client.push_bulk('class' => PipelineConcludeWorker,
+                                  'args' => ids.in_groups_of(1))
+      end
   end
 end
