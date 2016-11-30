@@ -154,7 +154,7 @@ describe PipelineUnlockWorker do
 
     expect(Sidekiq::Client).to receive(:push_bulk)
       .with(hash_including('class' => worker,
-                            'args' => pipeline_ids))
+                           'args' => pipeline_ids))
       .once
 
     yield

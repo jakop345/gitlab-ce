@@ -8,7 +8,7 @@ class PipelineConcludeWorker
 
   def perform(pipeline_id)
     Ci::Pipeline.find_by(id: pipeline_id).try do |pipeline|
-      return if pipeline.complete?
+      break if pipeline.complete?
 
       # We try to repair pipeline for the last time.
       #
