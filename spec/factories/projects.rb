@@ -12,6 +12,9 @@ FactoryGirl.define do
     # Behaves differently to nil due to cache_has_external_issue_tracker
     has_external_issue_tracker false
 
+    # if no visibility trait is provided it creates a public project
+    visibility_level Gitlab::VisibilityLevel::PUBLIC
+
     trait :public do
       visibility_level Gitlab::VisibilityLevel::PUBLIC
     end

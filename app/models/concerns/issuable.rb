@@ -5,6 +5,19 @@
 # Used by Issue, MergeRequest
 #
 module Issuable
+  # Allow only users which can read project being assigned to issuable,
+  # also prevents ids for non existing users.
+  class MemberValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      user    = User.find_by_id(value)
+      project = record.project
+
+      if user.nil? || !user.can?(:read_project, project)
+        record.errors[:assignee_id] << 'Unauthorized user'
+      end
+    end
+  end
+
   extend ActiveSupport::Concern
   include CacheMarkdownField
   include Participable
@@ -42,6 +55,7 @@ module Issuable
 
     validates :author, presence: true
     validates :title, presence: true, length: { maximum: 255 }
+    validates :assignee_id, presence: true, allow_nil: true, member: true
 
     scope :authored, ->(user) { where(author_id: user) }
     scope :assigned_to, ->(u) { where(assignee_id: u.id)}
@@ -93,7 +107,8 @@ module Issuable
 
     def update_assignee_cache_counts
       # make sure we flush the cache for both the old *and* new assignee
-      User.find(assignee_id_was).update_cache_counts if assignee_id_was
+      user = User.find_by_id(assignee_id_was)
+      user.update_cache_counts if user
       assignee.update_cache_counts if assignee
     end
 

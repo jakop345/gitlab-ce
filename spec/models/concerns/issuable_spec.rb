@@ -36,6 +36,36 @@ describe Issue, "Issuable" do
     it { is_expected.to validate_presence_of(:author) }
     it { is_expected.to validate_presence_of(:title) }
     it { is_expected.to validate_length_of(:title).is_at_most(255) }
+
+
+    context "assignee_id" do
+      context "when allowed to read project" do
+        it "assigns user" do
+          issue.project.update(visibility_level: Gitlab::VisibilityLevel::INTERNAL)
+
+          issue.assignee_id = user.id
+          expect(issue.save).to eq(true)
+        end
+      end
+
+      context "when not allowed to read project" do
+        it "throws error" do
+          issue.project.update(visibility_level: Gitlab::VisibilityLevel::PRIVATE)
+
+          issue.assignee_id = user.id
+          expect(issue.save).to eq(false)
+          expect(issue.errors).to have_key(:assignee_id)
+        end
+      end
+
+      context "when assignee_id is invalid" do
+        it "throws error" do
+          issue.assignee_id = 0
+          expect(issue.save).to eq(false)
+          expect(issue.errors).to have_key(:assignee_id)
+        end
+      end
+    end
   end
 
   describe "Scope" do
