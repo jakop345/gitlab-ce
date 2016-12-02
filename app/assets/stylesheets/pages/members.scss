@@ -79,11 +79,12 @@
     margin-top: 5px;
 
     .dropdown-menu-toggle {
+      vertical-align: middle;
       width: 100%;
     }
 
     @media (min-width: $screen-sm-min) {
-      top: 2.4px;
+      margin-top: 0;
       width: 155px;
     }
   }
@@ -122,6 +123,5 @@
 
   @media (min-width: $screen-sm-min) {
     right: 160px;
-    top: 8px;
   }
 }
