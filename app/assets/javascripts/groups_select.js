@@ -12,7 +12,7 @@
           return $(select).select2({
             placeholder: "Search for a group",
             multiple: $(select).hasClass('multiselect'),
-            minimumInputLength: 0,
+            minimumInputLength: 1,
             query: function(query) {
               options = { all_available: all_available, skip_groups: skip_groups };
               return Api.groups(query.term, options, function(groups) {
