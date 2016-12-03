@@ -161,6 +161,7 @@
           if (_this.firstCICheck || data.status !== _this.opts.ci_status && (data.status != null)) {
             _this.opts.ci_status = data.status;
             _this.showCIStatus(data.status);
+            _this.initPipelineGraph();
             if (data.coverage) {
               _this.showCICoverage(data.coverage);
             }
@@ -190,6 +191,23 @@
       })(this));
     };
 
+    MergeRequestWidget.prototype.initPipelineGraph = function() {
+      const widgets = document.querySelectorAll('.ci_widget');
+      const widget = [].find.call(widgets, widget => widget.style.display !== 'none');
+      widget.addEventListener('mouseover', this.delegatePipelineNodeHover.bind(this));
+    };
+
+    MergeRequestWidget.prototype.delegatePipelineNodeHover = function(e) {
+      const stageContainer = e.target.closest('.stage-container');
+      if (!stageContainer || (this.currentTarget && stageContainer.id === this.currentTarget.id)) return;
+      this.currentTarget = stageContainer;
+      this.currentTarget.addEventListener('mouseleave', this.hidePipelineNodeMenu.bind(this));
+    };
+
+    MergeRequestWidget.prototype.hidePipelineNodeMenu = function() {
+      $(this.currentTarget.querySelector('.dropdown-menu')).dropdown('toggle');
+    };
+
     MergeRequestWidget.prototype.pollCIEnvironmentsStatus = function() {
       this.fetchBuildEnvironmentStatusInterval = setInterval(() => {
         if (!this.readyForCIEnvironmentCheck) return;
@@ -212,11 +230,11 @@
         if ($(`.mr-state-widget #${ environment.id }`).length) return;
         const $template = $(DEPLOYMENT_TEMPLATE);
         if (!environment.external_url || !environment.external_url_formatted) $('.js-environment-link', $template).remove();
-        
+
         if (!environment.stop_url) {
           $('.js-stop-env-link', $template).remove();
         }
-        
+
         if (environment.deployed_at && environment.deployed_at_formatted) {
           environment.deployed_at = gl.utils.getTimeago().format(environment.deployed_at, 'gl_en') + '.';
         } else {

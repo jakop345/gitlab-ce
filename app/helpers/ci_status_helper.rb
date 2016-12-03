@@ -30,7 +30,7 @@ module CiStatusHelper
     status.humanize
   end
 
-  def ci_icon_for_status(status)
+  def ci_icon_for_status(status, size: 14)
     icon_name =
       case status
       when 'success'
@@ -53,7 +53,7 @@ module CiStatusHelper
         'icon_status_canceled'
       end
 
-    custom_icon(icon_name)
+    custom_icon(icon_name, size: size)
   end
 
   def render_commit_status(commit, ref: nil, tooltip_placement: 'auto left')

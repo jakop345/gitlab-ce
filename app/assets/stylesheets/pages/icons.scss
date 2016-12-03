@@ -4,6 +4,14 @@
   svg {
     fill: $gl-success;
   }
+
+  &.background-icon {
+    background-color: $white-light;
+
+    &:hover {
+      background-color: $gl-success;
+    }
+  }
 }
 
 .ci-status-icon-failed {
@@ -11,6 +19,14 @@
 
   svg {
     fill: $gl-danger;
+  }
+
+  &.background-icon {
+    background-color: $white-light;
+
+    &:hover {
+      background-color: $gl-danger;
+    }
   }
 }
 
@@ -21,6 +37,14 @@
   svg {
     fill: $gl-warning;
   }
+
+  &.background-icon {
+    background-color: $white-light;
+
+    &:hover {
+      background-color: $gl-warning;
+    }
+  }
 }
 
 .ci-status-icon-running {
@@ -28,6 +52,14 @@
 
   svg {
     fill: $blue-normal;
+  }
+
+  &.background-icon {
+    background-color: $white-light;
+
+    &:hover {
+      background-color: $blue-normal;
+    }
   }
 }
 
@@ -39,6 +71,14 @@
   svg {
     fill: $gl-gray;
   }
+
+  &.background-icon {
+    background-color: $white-light;
+
+    &:hover {
+      background-color: $gl-gray;
+    }
+  }
 }
 
 .ci-status-icon-created,
@@ -47,5 +87,13 @@
 
   svg {
     fill: $gray-darkest;
+  }
+
+  &.background-icon {
+    background-color: $white-light;
+
+    &:hover {
+      background-color: $gray-darkest;
+    }
   }
 }

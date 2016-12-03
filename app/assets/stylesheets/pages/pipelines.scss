@@ -435,75 +435,9 @@
       }
 
       .grouped-pipeline-dropdown {
-        padding: 0;
-        width: 186px;
         left: auto;
         right: -197px;
         top: -9px;
-
-        ul {
-          max-height: 245px;
-          overflow: auto;
-
-          li:first-child {
-            padding-top: 8px;
-          }
-
-          li:last-child {
-            padding-bottom: 8px;
-          }
-        }
-
-        a {
-          color: $gl-text-color;
-          padding: 7px 8px 8px;
-
-          &:hover {
-            background-color: $blue-light-transparent;
-            border-radius: 3px;
-
-            .ci-status-text {
-              text-decoration: none;
-            }
-          }
-        }
-
-        svg {
-          width: 14px;
-          height: 14px;
-        }
-
-        .ci-status-text {
-          width: 112px;
-        }
-
-        .arrow {
-          &::before,
-          &::after {
-            content: '';
-            display: inline-block;
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            top: 18px;
-          }
-
-          &::before {
-            left: -5px;
-            margin-top: -6px;
-            border-width: 7px 5px 7px 0;
-            border-right-color: $border-color;
-          }
-
-          &::after {
-            left: -4px;
-            margin-top: -9px;
-            border-width: 10px 7px 10px 0;
-            border-right-color: $white-light;
-          }
-        }
       }
 
       .badge {
@@ -638,6 +572,47 @@
       border-left: 2px solid $border-color;
       border-radius: 20px 0 0;
     }
+  }
+}
+
+.grouped-pipeline-dropdown {
+  padding: 0;
+  width: 186px;
+
+  ul {
+    max-height: 245px;
+    overflow: auto;
+
+    li:first-child {
+      padding-top: 8px;
+    }
+
+    li:last-child {
+      padding-bottom: 8px;
+    }
+  }
+
+  a {
+    color: $gl-text-color;
+    padding: 7px 8px 8px;
+
+    &:hover {
+      background-color: $blue-light-transparent;
+      border-radius: 3px;
+
+      .ci-status-text {
+        text-decoration: none;
+      }
+    }
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .ci-status-text {
+    width: 112px;
   }
 }
 
