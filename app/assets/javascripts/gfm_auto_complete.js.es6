@@ -52,6 +52,10 @@
         return $.fn.atwho["default"].callbacks.filter(query, data, searchKey);
       },
       beforeInsert: function(value) {
+        if (value && !this.setting.skipSpecialCharacterTest) {
+          var withoutAt = value.substring(1);
+          if (withoutAt && /[^\w\d]/.test(withoutAt)) value = value.charAt() + '"' + withoutAt + '"';
+        }
         if (!GitLab.GfmAutoComplete.dataLoaded) {
           return this.at;
         } else {
@@ -117,6 +121,7 @@
         insertTpl: ':${name}:',
         data: ['loading'],
         startWithSpace: false,
+        skipSpecialCharacterTest: true,
         callbacks: {
           sorter: this.DefaultOptions.sorter,
           filter: this.DefaultOptions.filter,
@@ -141,6 +146,7 @@
         data: ['loading'],
         startWithSpace: false,
         alwaysHighlightFirst: true,
+        skipSpecialCharacterTest: true,
         callbacks: {
           sorter: this.DefaultOptions.sorter,
           filter: this.DefaultOptions.filter,
@@ -219,12 +225,13 @@
             }
           };
         })(this),
-        insertTpl: '${atwho-at}"${title}"',
+        insertTpl: '${atwho-at}${title}',
         data: ['loading'],
         startWithSpace: false,
         callbacks: {
           matcher: this.DefaultOptions.matcher,
           sorter: this.DefaultOptions.sorter,
+          beforeInsert: this.DefaultOptions.beforeInsert,
           beforeSave: function(milestones) {
             return $.map(milestones, function(m) {
               if (m.title == null) {
@@ -284,6 +291,7 @@
         callbacks: {
           matcher: this.DefaultOptions.matcher,
           sorter: this.DefaultOptions.sorter,
+          beforeInsert: this.DefaultOptions.beforeInsert,
           beforeSave: function(merges) {
             var sanitizeLabelTitle;
             sanitizeLabelTitle = function(title) {
@@ -308,6 +316,7 @@
         at: '/',
         alias: 'commands',
         searchKey: 'search',
+        skipSpecialCharacterTest: true,
         displayTpl: function(value) {
           var tpl = '<li>/${name}';
           if (value.aliases.length > 0) {
