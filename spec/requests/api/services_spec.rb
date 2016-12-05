@@ -7,7 +7,7 @@ describe API::Services, api: true  do
   let(:user2) { create(:user) }
   let(:project) {create(:project, creator_id: user.id, namespace: user.namespace) }
 
-  Service.available_services_names.each do |service|
+  ['asana', 'assembla'].each do |service|
     describe "PUT /projects/:id/services/#{service.dasherize}" do
       include_context service
 
@@ -98,7 +98,7 @@ describe API::Services, api: true  do
         post api("/projects/#{project.id}/services/idonotexist/trigger")
 
         expect(response).to have_http_status(404)
-        expect(json_response["message"]).to eq("404 Service Not Found")
+        expect(json_response["error"]).to eq("404 Not Found")
       end
     end
 
