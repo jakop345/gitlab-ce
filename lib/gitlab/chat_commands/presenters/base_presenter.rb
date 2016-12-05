@@ -12,18 +12,14 @@ module Gitlab::ChatCommands::Presenters
       ephemeral_response(text: message)
     end
 
-    def access_denied
-      ephemeral_response(text: "Whoops! That action is not allowed. This incident will be [reported](https://xkcd.com/838/).")
-    end
-
     def not_found
       ephemeral_response(text: "404 not found! GitLab couldn't find what you were looking for! :boom:")
     end
 
-    def authorize_chat_name(url)
+    def authorize
       message =
-        if url
-          ":wave: Hi there! Before I do anything for you, please [connect your GitLab account](#{url})."
+        if @resource
+          format ":wave: Hi there! Before I do anything for you, please [connect your GitLab account](#{@resource})."
         else
           ":sweat_smile: Couldn't identify you, nor can I autorize you!"
         end
@@ -71,6 +67,5 @@ module Gitlab::ChatCommands::Presenters
         ]
       )
     end
-
   end
 end

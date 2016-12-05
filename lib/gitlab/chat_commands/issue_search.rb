@@ -1,6 +1,6 @@
 module Gitlab
   module ChatCommands
-    class IssueSearch < IssueCommand
+    class IssueSearch < Gitlab::ChatCommands::IssueCommand
       def self.match(text)
         /\Aissue\s+search\s+(?<query>.*)/.match(text)
       end
