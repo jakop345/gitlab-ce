@@ -1,6 +1,9 @@
 - page_title "Runners"
+= render "projects/settings/head"
 
 .light.prepend-top-default
+  %h4.prepend-top-0
+    = page_title
   %p
     A 'Runner' is a process which runs a build.
     You can setup as many Runners as you need.
@@ -25,3 +28,12 @@
     = render 'specific_runners'
   .col-sm-6
     = render 'shared_runners'
+
+%hr
+  = render 'projects/variables/index'
+
+%hr
+  = render 'projects/triggers/index'
+
+%hr
+  = render 'projects/pipelines_settings/show'
