@@ -1,4 +1,4 @@
-class SlackService < ChatService
+class SlackNotificationsService < ChatService
   def title
     'Slack notifications'
   end
@@ -8,7 +8,7 @@ class SlackService < ChatService
   end
 
   def to_param
-    'slack'
+    'slack_notifications'
   end
 
   def help

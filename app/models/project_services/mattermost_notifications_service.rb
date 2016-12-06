@@ -1,4 +1,4 @@
-class MattermostService < ChatService
+class MattermostNotificationsService < ChatService
   def title
     'Mattermost notifications'
   end
@@ -8,7 +8,7 @@ class MattermostService < ChatService
   end
 
   def to_param
-    'mattermost'
+    'mattermost_notifications'
   end
 
   def help
