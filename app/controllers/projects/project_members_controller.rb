@@ -10,12 +10,11 @@ class Projects::ProjectMembersController < Projects::ApplicationController
     @project_members = @project.project_members
     @project_members = @project_members.non_invite unless can?(current_user, :admin_project, @project)
 
-    #Initiate the controller for the group links
+    # Group links
     @group_links = project.project_group_links.all
 
     @skip_groups = @group_links.pluck(:group_id)
     @skip_groups << project.namespace_id unless project.personal?
-    #@skip_groups << project.group.try(:id)
 
     if params[:search].present?
       users = @project.users.search(params[:search]).to_a
@@ -29,7 +28,6 @@ class Projects::ProjectMembersController < Projects::ApplicationController
     @requesters = AccessRequestsFinder.new(@project).execute(current_user)
 
     @project_member = @project.project_members.new
-
   end
 
   def create

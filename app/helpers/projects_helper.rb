@@ -390,7 +390,7 @@ module ProjectsHelper
       "success"
     end
   end
-  
+
   def readme_cache_key
     sha = @project.commit.try(:sha) || 'nil'
     [@project.path_with_namespace, sha, "readme"].join('-')

@@ -15,7 +15,6 @@ class Projects::ProtectedBranchesController < Projects::ApplicationController
   def create
     @protected_branch = ::ProtectedBranches::CreateService.new(@project, current_user, protected_branch_params).execute
     if @protected_branch.persisted?
-      #redirect_to namespace_project_protected_branches_path(@project.namespace, @project)
       redirect_to_protected_branches
     else
       load_protected_branches
@@ -75,5 +74,4 @@ class Projects::ProtectedBranchesController < Projects::ApplicationController
     end
     redirect_to path
   end
-
 end

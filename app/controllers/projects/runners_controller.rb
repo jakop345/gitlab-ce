@@ -10,12 +10,12 @@ class Projects::RunnersController < Projects::ApplicationController
       assignable_for(project).ordered.page(params[:page]).per(20)
     @shared_runners = Ci::Runner.shared.active
     @shared_runners_count = @shared_runners.count(:all)
-    #Variables
+    # Variables
     @variable = Ci::Variable.new
-    #Triggers
+    # Triggers
     @triggers = project.triggers
     @trigger = Ci::Trigger.new
-    #Pipelines settings
+    # Pipelines settings
     @ref = params[:ref] || @project.default_branch || 'master'
 
     @badges = [Gitlab::Badge::Build::Status,
