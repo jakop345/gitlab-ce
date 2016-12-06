@@ -1,5 +1,5 @@
-%li.notification-list-item
-  %span.notification.fa.fa-holder.append-right-5
+%li.single-line-list-item
+  %span.icon-holder.append-right-5
     - if setting.global?
       = notification_icon(current_user.global_notification_setting.level)
     - else
