@@ -157,12 +157,13 @@
           new NotificationsDropdown();
           break;
         case 'groups:group_members:index':
-          new gl.MemberExpirationDate();
+          new gl.MemberExpirationDate('.js-access-expiration-date-groups');
           new gl.Members();
           new UsersSelect();
           break;
         case 'projects:project_members:index':
           new gl.MemberExpirationDate();
+          new gl.MemberExpirationDate('.js-access-expiration-date-groups');
           new gl.Members();
           new UsersSelect();
           new GroupsSelect();
