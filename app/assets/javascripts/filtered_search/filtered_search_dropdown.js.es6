@@ -3,10 +3,11 @@
   const DATA_DROPDOWN_TRIGGER = 'data-dropdown-trigger';
 
   class FilteredSearchDropdown {
-    constructor(dropdown, input) {
+    constructor(dropdown, input, reinitialize) {
       this.hookId = 'filtered-search';
       this.input = input;
       this.dropdown = dropdown;
+      this.reinitialize = reinitialize;
       this.bindEvents();
     }
 
@@ -65,6 +66,7 @@
     }
 
     destroy() {
+      console.log('destroy dropdown trigger')
       this.input.setAttribute(DATA_DROPDOWN_TRIGGER, '');
       droplab.setConfig(this.getFilterConfig());
       droplab.setData(this.hookId, []);
@@ -93,6 +95,7 @@
     }
 
     setAsDropdown() {
+      console.log('set dropdown trigger')
       this.input.setAttribute(DATA_DROPDOWN_TRIGGER, `#${this.listId}`);
     }
 
@@ -121,7 +124,7 @@
     render(hide) {
       this.setAsDropdown();
 
-      const firstTimeInitialized = this.getCurrentHook() === undefined;
+      const firstTimeInitialized = this.getCurrentHook() === undefined || this.reinitialize;
 
       if (firstTimeInitialized) {
         this.renderContent();

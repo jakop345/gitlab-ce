@@ -80,7 +80,22 @@
       this.tokenizer = gl.FilteredSearchTokenizer;
       this.bindEvents();
       loadSearchParamsFromURL();
+      this.resetDropdowns();
+
+      console.log('constructor')
       this.setDropdown();
+
+      document.addEventListener('page:load', function() {
+        droplab.load();
+      });
+    }
+
+    resetDropdowns() {
+      dropdownHint = null;
+      dropdownAuthor = null;
+      dropdownAssignee = null;
+      dropdownMilestone = null;
+      dropdownLabel = null;
     }
 
     static addWordToInput(word, addSpace) {
@@ -159,15 +174,16 @@
         this.currentDropdown = 'hint';
 
         if (!dropdownHint) {
-          dropdownHint = new gl.DropdownHint(document.querySelector('#js-dropdown-hint'), filteredSearch, this.currentDropdown);
+          dropdownHint = new gl.DropdownHint(document.querySelector('#js-dropdown-hint'), filteredSearch, true);
         }
         dropdownHint.setOffset(dropdownOffset);
-        dropdownHint.render(hideDropdown);
+        dropdownHint.render();
       }
     }
 
     dismissCurrentDropdown() {
       if (this.currentDropdown === 'hint') {
+        console.log('destroy')
         dropdownHint.destroy();
       }
     }

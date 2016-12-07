@@ -21,10 +21,10 @@
   }];
 
   class DropdownHint extends gl.FilteredSearchDropdown {
-    constructor(dropdown, input, filterKeyword) {
-      super(dropdown, input);
+    constructor(dropdown, input, reinitialize) {
+      super(dropdown, input, reinitialize);
       this.listId = 'js-dropdown-hint';
-      this.filterKeyword = filterKeyword;
+      this.filterKeyword = 'hint';
     }
 
     itemClicked(e) {

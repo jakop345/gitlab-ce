@@ -275,7 +275,15 @@ require('./window')(function(w){
         this.config = obj;
       },
 
+      load: function() {
+        var dropdownTriggers = [].slice.apply(document.querySelectorAll('['+DATA_TRIGGER+']'));
+        // debugger
+        this.hooks = [];
+        this.addHooks(dropdownTriggers).init();
+      },
+
       init: function () {
+        // debugger
         this.plugins.forEach(function(plugin) {
           plugin(DropLab);
         })

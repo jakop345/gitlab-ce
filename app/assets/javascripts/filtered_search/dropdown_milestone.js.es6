@@ -31,7 +31,6 @@
       const valueWithoutPrefix = valueWithoutColon.slice(1);
 
       const title = item.title.toLowerCase();
-
       const noTitleMatch = title.indexOf(valueWithoutPrefix) === -1 && title.indexOf(valueWithoutColon) === -1;
 
       item.droplab_hidden = noTitleMatch;
