@@ -215,6 +215,10 @@ module ProjectsHelper
       nav_tabs << :milestones
     end
 
+    if can?(current_user, :request_access, project)
+      nav_tabs << :settings
+    end
+
     nav_tabs.flatten
   end
 

@@ -100,7 +100,7 @@
             %span
               Settings
         - else
-          = link_to namespace_project_project_members_path(@project), title: 'Settings', class: 'shortcuts-tree' do
+          = link_to namespace_project_project_members_path(@project.namespace, @project), title: 'Settings', class: 'shortcuts-tree' do
             %span
               Settings
 
