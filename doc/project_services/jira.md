@@ -198,6 +198,9 @@ Make sure that the user you set up for GitLab to communicate with JIRA has the
 correct access permission to post comments on a ticket and to also transition
 the ticket, if you'd like GitLab to also take care of closing them.
 
+Also make sure GitLab issues are enabled in your project settings, otherwise
+JIRA issues markdown and update comments won't work.
+
 ### GitLab is unable to close a ticket
 
 Make sure the `Transition ID` you set within the JIRA settings matches the one
