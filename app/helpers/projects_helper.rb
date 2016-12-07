@@ -187,9 +187,7 @@ module ProjectsHelper
       nav_tabs << :environments
     end
 
-    if can?(current_user, :admin_project, project)  || can?(current_user, :request_access, project)
-      nav_tabs << :settings
-    end
+    nav_tabs << :settings
 
     if can?(current_user, :read_project_member, project)
       nav_tabs << :team
@@ -214,10 +212,6 @@ module ProjectsHelper
     if can?(current_user, :read_milestone, project)
       nav_tabs << :milestones
     end
-
-    '''if can?(current_user, :request_access, project)
-      nav_tabs << :settings
-    end'''
 
     nav_tabs.flatten
   end
