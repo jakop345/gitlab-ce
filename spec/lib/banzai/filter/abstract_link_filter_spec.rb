@@ -32,12 +32,58 @@ describe Banzai::Filter::AbstractReferenceFilter do
   end
 
   describe '#find_projects_for_paths' do
-    it 'returns a list of Projects for a list of paths' do
-      doc = Nokogiri::HTML.fragment('')
-      filter = described_class.new(doc, project: project)
+    let(:doc) { Nokogiri::HTML.fragment('') }
+    let(:filter) { described_class.new(doc, project: project) }
 
-      expect(filter.find_projects_for_paths([project.path_with_namespace])).
-        to eq([project])
+    context 'with RequestStore disabled' do
+      it 'returns a list of Projects for a list of paths' do
+        expect(filter.find_projects_for_paths([project.path_with_namespace])).
+          to eq([project])
+      end
+
+      it "return an empty array for paths that don't exist" do
+        expect(filter.find_projects_for_paths(['nonexistent/project'])).
+          to eq([])
+      end
+    end
+
+    context 'with RequestStore enabled' do
+      let(:project_refs_cache) { {} }
+      
+      before do
+        allow(RequestStore).to receive(:active?).and_return(true)
+        allow(filter).to receive(:project_refs_cache).and_return(project_refs_cache)
+      end
+
+      it 'returns a list of Projects for a list of paths' do
+        expect(filter.find_projects_for_paths([project.path_with_namespace])).
+          to eq([project])
+      end
+
+      context "when no project with that path exists" do
+        it "returns no value" do
+          expect(filter.find_projects_for_paths(['nonexistent/project'])).
+            to eq([])
+        end
+
+        it "adds the ref to the project refs cache" do
+          filter.find_projects_for_paths(['nonexistent/project'])
+
+          expect(project_refs_cache).to eq({ 'nonexistent/project' => nil })
+        end
+
+        context 'when the project refs cache includes nil values' do
+          before do
+            # adds { 'nonexistent/project' => nil } to cache
+            filter.project_from_ref_cached('nonexistent/project')
+          end
+
+          it "return an empty array for paths that don't exist" do
+            expect(filter.find_projects_for_paths(['nonexistent/project'])).
+              to eq([])
+          end
+        end
+      end
     end
   end
 
